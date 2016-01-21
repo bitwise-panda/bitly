@@ -37,6 +37,21 @@ module Bitly
         @referrers
       end
 
+      # OAuth 2 endpoint that Save a Custom Bitlink for a custom short domain.
+      # This endpoint is only available to Bitly Brand Tools customers.
+      #
+      # http://dev.bitly.com/links.html#v3_user_save_custom_domain_keyword
+      def save_custom_domain_keyword(keywork_link, target_link, opts={})
+        query = { :keywork_link => keywork_link, :target_link => target_link }.merge(opts)
+        response = self.class.get('/save_custom_domain_keyword', :query => query)
+        if result['status_code'] == 200
+          @custom_link = result['data']['save_custom_domain_keyword'].map { |rs| Bitly::V3::CustomLink.new(rs) }
+        else
+          raise BitlyError.new(result['status_txt'], result['status_code'])
+        end
+        @custom_link
+      end
+
       # OAuth 2 endpoint that provides a list of countries from which clicks
       # on a given user's bit.ly links are originating, and the number of clicks per country.
       #
