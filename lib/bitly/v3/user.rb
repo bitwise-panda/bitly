@@ -44,10 +44,10 @@ module Bitly
       def save_custom_domain_keyword(keywork_link, target_link, opts={})
         query = { :keywork_link => keywork_link, :target_link => target_link }.merge(opts)
         response = self.class.get('/save_custom_domain_keyword', :query => query)
-        if result['status_code'] == 200
-          @custom_link = result['data']['save_custom_domain_keyword'].map { |rs| Bitly::V3::CustomLink.new(rs) }
+        if response['status_code'] == 200
+          @custom_link = response['data']['save_custom_domain_keyword'].map { |rs| Bitly::V3::CustomLink.new(rs) }
         else
-          raise BitlyError.new(result['status_txt'], result['status_code'])
+          raise BitlyError.new(response['status_txt'], response['status_code'])
         end
         @custom_link
       end
