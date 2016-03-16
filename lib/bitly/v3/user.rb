@@ -47,6 +47,7 @@ module Bitly
         if response['status_code'] == 200
           @custom_link = response['data']['save_custom_domain_keyword'].map { |rs| Bitly::V3::CustomLink.new(rs) }
         else
+          puts response.inspect
           raise BitlyError.new(response['status_txt'], response['status_code'])
         end
         @custom_link
